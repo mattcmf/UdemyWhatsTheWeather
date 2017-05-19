@@ -10,21 +10,19 @@ public class Weather {
 	String rawFeed;
 	JSONObject jsonPart;
 
-	public Weather(String rawFeed) {
+	public Weather(String rawFeed) throws JSONException {
 		this.rawFeed = rawFeed;
 		initFeed();
 	}
 
-	private void initFeed() {
+	private void initFeed() throws JSONException {
 		JSONObject jsonObject = null;
-		try {
+		if (null != rawFeed) {
 			jsonObject = new JSONObject(rawFeed);
-			String weatherinfo = jsonObject.getString("weather");
-			JSONArray arr = new JSONArray(weatherinfo);
-			jsonPart = arr.getJSONObject(0);
-		} catch (JSONException e) {
-			e.printStackTrace();
 		}
+		String weatherinfo = jsonObject.getString("weather");
+		JSONArray arr = new JSONArray(weatherinfo);
+		jsonPart = arr.getJSONObject(0);
 	}
 
 	public String get(WeatherProperties property) {

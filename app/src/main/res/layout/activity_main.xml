@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -10,8 +11,57 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="demos.udemywhatstheweather.MainActivity">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srcCompat="@drawable/shrinepink"
+        android:id="@+id/imageView"
+        android:layout_alignParentTop="true"
+        android:scaleType="center"
+        android:layout_alignParentStart="true" />
+
     <TextView
+        android:text="Enter a City ..."
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_marginTop="28dp"
+        android:id="@+id/enterACityTitle"
+        android:textSize="30sp"
+        android:textStyle="normal|bold"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_marginTop="18dp"
+        android:id="@+id/cityInput"
+        android:text="London"
+        android:textSize="30sp"
+        android:layout_below="@+id/enterACityTitle"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:id="@+id/weatherDescription"
+        tools:text="sample sample sample"
+        android:textStyle="normal|bold"
+        android:textSize="24sp"
+        android:layout_below="@+id/cityInput"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="Whats the weather?"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="42dp"
+        android:id="@+id/getWeather"
+        android:layout_below="@+id/weatherDescription"
+        android:layout_centerHorizontal="true"
+        android:onClick="clickWeather" />
 </RelativeLayout>
