@@ -8,13 +8,27 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
 
 public class WeatherFeedDownloader {
-
 
 	private String feedBase ="http://api.openweathermap.org/data/2.5/weather?q=";
 	private String feedToken ="&APPID=7b62957d67e69c6eddbce621517d7487";
 	private String TestFeed = feedBase + "London" + feedToken;
+
+
+
+	public String getFeed(String city) {
+		try {
+			return new FullPageSourceDownloader().execute(feedBase + city + feedToken).get();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			return "InterruptedException";
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+			return "ExecutionException";
+		}
+	}
 
 	private class FullPageSourceDownloader extends AsyncTask<String, Void, String> {
 		@Override
@@ -52,8 +66,7 @@ public class WeatherFeedDownloader {
 			}
 			catch(Exception e){
 				e.printStackTrace();
-
-				return "failed";
+				return e.getMessage();
 			}
 		}
 	}

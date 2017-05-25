@@ -12,7 +12,7 @@ import org.json.JSONException;
 
 public class MainActivity extends AppCompatActivity {
 
-	MockFeedDownloader weatherFeedDownloader;
+	WeatherFeedDownloader weatherFeedDownloader;
 	TextView weatherDescription = null;
 	EditText cityInput = null;
 	private String city;
@@ -23,8 +23,8 @@ public class MainActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_main);
 		cityInput = (EditText) findViewById(R.id.cityInput);
 		weatherDescription = (TextView) findViewById(R.id.weatherDescription);
-//		WeatherFeedDownloader weatherFeedDownloader = new WeatherFeedDownloader();
-		weatherFeedDownloader = new MockFeedDownloader();
+		weatherFeedDownloader = new WeatherFeedDownloader();
+//		weatherFeedDownloader = new MockFeedDownloader();
 		city = cityInput.getText().toString();
 
 		getWeather();
@@ -39,8 +39,7 @@ public class MainActivity extends AppCompatActivity {
 		city = cityInput.getText().toString();
 		String rawFeed = null;
 		try {
-			rawFeed = weatherFeedDownloader.getFeed(city,
-					getApplication().getApplicationContext());
+			rawFeed = weatherFeedDownloader.getFeed(city);
 		} catch (Exception e) {
 			weatherDescription.setText(e.getMessage());
 			return;
