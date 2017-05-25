@@ -9,7 +9,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,7 +16,6 @@ public class MainActivity extends AppCompatActivity {
 	TextView weatherDescription = null;
 	EditText cityInput = null;
 	private String city;
-	JSONObject jsonObject = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,30 +26,32 @@ public class MainActivity extends AppCompatActivity {
 //		WeatherFeedDownloader weatherFeedDownloader = new WeatherFeedDownloader();
 		weatherFeedDownloader = new MockFeedDownloader();
 		city = cityInput.getText().toString();
-		String rawFeed = weatherFeedDownloader.getFeed(city, getApplication().getApplicationContext());
-		Weather weather = null;
+
 		getWeather();
 	}
 
-	public void clickWeather(View view){
+	public void clickWeather(View view) {
 		getWeather();
 	}
 
-	public void getWeather(){
+	public void getWeather() {
 		Weather weather;
 		city = cityInput.getText().toString();
-		String rawFeed = weatherFeedDownloader.getFeed(city, getApplication().getApplicationContext());
+		String rawFeed = null;
+		try {
+			rawFeed = weatherFeedDownloader.getFeed(city,
+					getApplication().getApplicationContext());
+		} catch (Exception e) {
+			weatherDescription.setText(e.getMessage());
+			return;
+		}
 
 		try {
 			weather = new Weather(rawFeed);
 			weatherDescription.setText(weather.get(DESCRIPTION));
 		} catch (JSONException e) {
-			//TODO: Should be smart enough to know between an error and an unsupported country
 			weatherDescription.setText("Country not supported");
 			e.printStackTrace();
-		} catch (Exception e){
-			weatherDescription.setText("An error has occured.");
 		}
-
 	}
 }

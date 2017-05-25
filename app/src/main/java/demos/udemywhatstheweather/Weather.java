@@ -7,31 +7,42 @@ import org.json.JSONObject;
 
 public class Weather {
 
-	String rawFeed;
-	JSONObject jsonPart;
+	private String rawFeed;
+	private JSONObject jsonPart;
+	private String feedError = null;
 
 	public Weather(String rawFeed) throws JSONException {
 		this.rawFeed = rawFeed;
 		initFeed();
 	}
 
-	private void initFeed() throws JSONException {
-		JSONObject jsonObject = null;
-		if (null != rawFeed) {
-			jsonObject = new JSONObject(rawFeed);
+	private void initFeed()  {
+		if (null == rawFeed) {
+			feedError = "Data feed is null";
+			return;
 		}
-		String weatherinfo = jsonObject.getString("weather");
-		JSONArray arr = new JSONArray(weatherinfo);
-		jsonPart = arr.getJSONObject(0);
+
+		try {
+			JSONObject jsonObject = new JSONObject(rawFeed);
+			String weatherinfo = jsonObject.getString("weather");
+			JSONArray arr = new JSONArray(weatherinfo);
+			jsonPart = arr.getJSONObject(0);
+		} catch (JSONException e) {
+		feedError = "Error converting JSON feed";
+		}
+
 	}
 
 	public String get(WeatherProperties property) {
-		try {
-			return jsonPart.getString(property.prop());
-		} catch (JSONException e) {
-			e.printStackTrace();
+		if (null == feedError) {
+			try {
+				return jsonPart.getString(property.prop());
+			} catch (JSONException e) {
+				e.printStackTrace();
+				return feedError = "Error getting property data from JSON feed. " + e.getMessage();
+			}
+		} else {
+			return feedError;
 		}
-
-		return null;
 	}
 }
